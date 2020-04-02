@@ -1,0 +1,454 @@
+<html>
+<head>
+    <title> Chirag Shah - 19200072 InfoViz-assignment</title>
+    <script src="https://cdn.jsdelivr.net/npm/vega@5.9.0"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-lite@4.0.2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-embed@6.2.1"></script>
+</head>
+<body>
+    <table style="width: 850px" cellspacing="5" cellpadding="5">
+    <tbody>
+    <tr>
+    <td style="width: 200px; vertical-align: top;"><strong>Name:&nbsp;</strong></td>
+    <td style="vertical-align: top;">Chirag Shah</td>
+    </tr>
+    <tr>
+    <td style="vertical-align: top;"><strong>Student Number:</strong></td>
+    <td style="vertical-align: top;">19200072</td>
+    </tr>
+    <tr>
+    <td style="vertical-align: top;"><strong>Dataset description:</strong></td>
+    <td style="vertical-align: top;">
+        <p><a href="https://data.gov.ie/dataset/2016-make-model-year-failures-at-nct" target="_blank" rel="noopener">NCT Failure Rates upto 2016</a>.</p>
+        <p>
+            The Road Safety Authority (RSA) has provided the following information relating to vehicle makes and models tested by the National Car Testing Service in 2016. The main fields, for example, are summarised as follows:
+            <ul>
+                <li>"VehicleMake" : Vehicle maker.</li>
+                <li>"VehicleModel" : Model launched by vehicle maker.</li>
+                <li>"YearOfRelease" : This field specifies the year of birth for the particular car model.</li>
+                <li>"TotalReleases" : Describes total NCT's completed by each car model.</li>
+                <li>"Pass" : Total NCT's Passed by each car model in a particular year.</li>
+                <li>"PassPercent" : Total NCT's Passed % by each car model in a particular year.</li>
+                <li>"Fail" : Total NCT's Failed by each car model in a particular year.</li>
+                <li>"FailPercent" : Total NCT's Failed % by each car model in a particular year.</li>
+                <li>"VehicleAndSafetyEquipments", "LightingAndElectrical", etc. : These fields are related to fail items that caused the cars to fail the NCT's.</li>
+                <li>"VehicleAndSafetyEquipmentsPercent", "LightingAndElectricalPercent", etc. : These fields are related to fail items % that caused the cars to fail the NCT's.</li>
+            </ul> 
+            Overall this dataset has lots of information about vehicles which have been tested by the NCT.
+            The dataset in itself is cleaned as it doesn't have any missing values.
+            However, the column naming convention isn't that great. Hence I renamed the columns of dataset in Python to something thats more meaningful.
+            
+        </p>
+    </td>
+    </tr>
+    <tr>
+    <td style="vertical-align: top;"><strong>Initial questions</strong></td>
+    <td style="vertical-align: top;">
+        <ul style="list-style-type:disc">
+            <li>Who are the most popular vehicle makers between the years 2007-2010?</li>
+        </ul>
+    </td>
+    </tr>
+    </tbody>
+    </table>
+    <hr />
+  <div id="vis" class="container"></div>
+  <script type="text/javascript">
+    var yourVlSpec =  {
+    "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
+    "description": "",
+    "data": {
+        "url": "https://raw.githubusercontent.com/avidLearnerInProgress/infoviz-assignments/master/make_model_data_16_cleaned_renamed.csv"
+    },
+    "title": {
+        "text": "Top vehicle manufacturer between 2007-2010? ",
+        "anchor": "middle"
+    },
+    "transform": [
+        {
+            "filter": "datum.TotalReleases > 1000"
+        },
+        {
+            "filter": {
+                "field": "YearOfRelease",
+                "oneOf": [
+                    "2007",
+                    "2008",
+                    "2009",
+                    "2010"
+                ]
+            }
+        }
+    ],
+    "vconcat": [
+        {
+            "layer": [
+                {
+                    "width": 500,
+                    "height": 400,
+                    "mark": {
+                        "type": "bar",
+                        "fontWeight": "bold"
+                    },
+                    "encoding": {
+                        "x": {
+                            "field": "TotalReleases",
+                            "type": "quantitative",
+                            "aggregate": "sum",
+                            "axis": {
+                                "title": "Total NCT's conducted"
+                            }
+                        },
+                        "y": {
+                            "field": "VehicleMaker",
+                            "type": "nominal",
+                            "axis": {
+                                "title": "Vehicle Maker",
+                                "orient": "left"
+                            },
+                            "sort": {
+                                "op": "sum",
+                                "field": "TotalReleases",
+                                "order": "descending"
+                            }
+                        },
+                        "tooltip": [
+                            {
+                                "field": "TotalReleases",
+                                "type": "quantitative",
+                                "aggregate": "sum",
+                                "title": "Total NCT's conducted"
+                            }
+                        ],
+                        "color": {
+                            "condition": {
+                                "test": "datum.VehicleMaker == 'TOYOTA'",
+                                "value": "#488f31"
+                            },
+                            "value": "#BA55D3"
+                        }
+                    }
+                },
+                {
+                    "width": 500,
+                    "height": 400,
+                    "mark": {
+                        "type": "rect",
+                        "color": "#ffa600"
+                    },
+                    "encoding": {
+                        "x": {
+                            "field": "Fail",
+                            "type": "quantitative",
+                            "aggregate": "sum",
+                            "axis": {
+                                "title": "Total Failed NCT's"
+                            }
+                        },
+                        "y": {
+                            "field": "VehicleMaker",
+                            "type": "nominal",
+                            "axis": {
+                                "title": "Vehicle Maker"
+                            },
+                            "sort": {
+                                "op": "sum",
+                                "field": "TotalReleases",
+                                "order": "descending"
+                            }
+                        },
+                        "tooltip": [
+                            {
+                                "field": "Fail",
+                                "type": "quantitative",
+                                "aggregate": "sum",
+                                "title": "Total Failed NCT's"
+                            }
+                        ],
+                        "color": {
+                            "condition": {
+                                "test": "datum.VehicleMaker == 'TOYOTA'",
+                                "value": "#FF7F50"
+                            },
+                            "value": "#ff6361"
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "transform": [
+                {
+                    "filter": {
+                        "field": "VehicleMaker",
+                        "oneOf": [
+                            "SKODA",
+                            "TOYOTA",
+                            "FORD",
+                            "RENAULT",
+                            "VOLKSWAGEN",
+                            "MERCEDES BENZ",
+                            "PEUGEOT",
+                            "HYUNDAI",
+                            "DACIA"
+                        ]
+                    }
+                }
+            ],
+            "repeat": {
+                "column": [
+                    "EmissionsPercent",
+                    "SteeringAndSuspensionPercent"
+                ]
+            },
+            "spec": {
+                "mark": "bar",
+                "encoding": {
+                    "y": {
+                        "field": "VehicleMaker",
+                        "type": "nominal",
+                        "axis": {
+                            "title": "VehicleMaker"
+                        },
+                        "sort": {
+                            "op": "mean",
+                            "field": {
+                                "repeat": "column"
+                            },
+                            "order": "descending"
+                        }
+                    },
+                    "x": {
+                        "field": {
+                            "repeat": "column"
+                        },
+                        "type": "quantitative",
+                        "aggregate": "mean"
+                    },
+                    "color": {
+                        "condition": {
+                            "test": "datum.VehicleMaker == 'TOYOTA'",
+                            "value": "#488f31"
+                        },
+                        "value": "#ffa600"
+                    },
+                    "tooltip": [
+                        {
+                            "field": {
+                                "repeat": "column"
+                            },
+                            "type": "quantitative",
+                            "aggregate": "mean",
+                            "title": "Mean NCT Failures"
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "transform": [
+                {
+                    "filter": {
+                        "field": "VehicleMaker",
+                        "oneOf": [
+                            "SKODA",
+                            "TOYOTA",
+                            "FORD",
+                            "RENAULT",
+                            "VOLKSWAGEN",
+                            "MERCEDES BENZ",
+                            "PEUGEOT",
+                            "HYUNDAI",
+                            "DACIA"
+                        ]
+                    }
+                }
+            ],
+            "repeat": {
+                "column": [
+                    "LightTestPercent",
+                    "WheelsAndTyresPercent"
+                ]
+            },
+            "spec": {
+                "mark": "bar",
+                "encoding": {
+                    "y": {
+                        "field": "VehicleMaker",
+                        "type": "nominal",
+                        "axis": {
+                            "title": "VehicleMaker"
+                        },
+                        "sort": {
+                            "op": "mean",
+                            "field": {
+                                "repeat": "column"
+                            },
+                            "order": "descending"
+                        }
+                    },
+                    "x": {
+                        "field": {
+                            "repeat": "column"
+                        },
+                        "type": "quantitative",
+                        "aggregate": "mean"
+                    },
+                    "color": {
+                        "condition": {
+                            "test": "datum.VehicleMaker == 'TOYOTA'",
+                            "value": "#488f31"
+                        },
+                        "value": "#ffa600"
+                    },
+                    "tooltip": [
+                        {
+                            "field": {
+                                "repeat": "column"
+                            },
+                            "type": "quantitative",
+                            "aggregate": "mean",
+                            "title": "Mean NCT Failures"
+                        }
+                    ]
+                }
+            }
+        }
+    ],
+    "config": {
+        "axis": {
+            "labelFontSize": 18,
+            "titleFontSize": 18,
+            "titlePadding": 8
+        },
+        "title": {
+            "fontSize": 23,
+            "fontWeight": "bold"
+        }
+    }
+} 
+vegaEmbed("#vis", yourVlSpec);
+  </script>
+    <hr />
+<table style="width: 850px;" cellspacing="5" cellpadding="5">
+<tbody>
+<tr>
+<td style="width: 200px; vertical-align: top;"><strong>Description:&nbsp;</strong></td>
+<td style="vertical-align: top;">
+    This is a multi-view layered bar plot. The plot is seggregated into two views. <br><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    a. First view conveys top 10 vehicle manufacturers on basis of their Total NCT failures. <br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    b. Second view conveys the most popular vehicle manufacturer from the top 10 manufacturers obtained in the first view. <br>
+    <br><br>
+    Second view has 4 sub-plots where each of the sub-plot calculates mean of NCT failures due to one of the fail items from - [EmissionsPercent, SteeringAndSuspensionPercent, LightTestPercent, WheelsAndTyresPercent] <br>
+    Following is the detailed description of what information each of the sub-plot is conveying:<br>
+    <ol>
+        <li>
+            <p>
+                The relationship between <i>Total NCT's conducted</i>, <i>vehicle manufacturer</i> and <i>total failed NCT's</i> is shown by the first plot. 
+                The plot is sorted in descending order on the basis of total NCT's conducted.
+            </p>
+        </li>
+        <li>
+            <p>
+                From the visualisation obtained in the first plot, top 10 vehicle manufacturers are choosen namely - <br>
+                        <code>[
+                            "SKODA",
+                            "TOYOTA",
+                            "FORD",
+                            "RENAULT",
+                            "VOLKSWAGEN",
+                            "MERCEDES BENZ",
+                            "PEUGEOT",
+                            "HYUNDAI",
+                            "DACIA"
+                        ]</code> <br>
+                Now, for each of the above vehicle manufacturers, following multi-layered plots are generated -
+                <br>
+                    <ul>
+                        <li>Plot of left-top : mean of NCT failures due to <b>Emissions Percentage</b> on X-axis & <b><i>vehile manufacturers</i></b> on Y-axis </li>
+                        <li>Plot of right-top : mean of NCT failures due to <b><i>Steering And Suspension Percentage</b></i> on X-axis & <b></i>vehile manufacturers</b></i>on Y-axis </li>
+                        <li>Plot of left-bottom : mean of NCT failures due to <b><i>Light test Percentage</b></i> on X-axis & <b><i>vehile manufacturers</b></i> on Y-axis </li>
+                        <li>Plot of right-bottom : mean of NCT failures due to <b><i>Wheels and Tyres Percentage</b></i> on X-axis & <b><i>vehile manufacturers</b></i> on Y-axis </li>
+                    </ul>
+                    <br>
+                    Each plot is sorted in descending order on the basis of mean failures because of various fail items. 
+            </p>
+            
+        </li>
+    </ol>
+</td>
+</tr>
+<tr>
+<td style="vertical-align: top;"><strong>Insight:</strong></td>
+<td style="vertical-align: top;">
+    <p>
+    In general, it can be concluded from first view is that <b>Toyota</b> has the highest number of NCT's conducted across the years. Toyota is closely followed by Ford in the number of NCT's conducted.<br>
+    The graph also showcases the sum of Failed NCT's for each vehicle manufacturer(highlighted in red) where Ford has the highest number of failures. 
+    </p>
+    <p>
+        <p><b> Insight 1 - </b><br>
+            a. From the second view it can be concluded that Toyota has least number of mean failures in all the fail items. <br>
+            b. Here we observe that the green bar of Toyota is at near bottom for all the four plots <br>
+            c. This indicates that Toyota took utmost care in manufacturing their items for vehicles. Their items were robust and they didnt fail the NCT tests. <br>
+            <br>
+
+            With massive high number of NCT's conducted on different models by Toyota, Toyota also ensured that they never degraded the quality of items fitted inside the car models.
+            The above conclusion can be generalised to the fact that people didn't faced major after-sales services because of high quality maintianed during the process of manufacturing.
+            This can be one of the biggest reason why Toyota had their models listed in the post of <b><a href = "irishtimes.com/life-and-style/motors/small-but-mighty-our-top-five-city-cars-provide-character-and-value-for-money-1.918622">Top City Cars</a></b>
+
+        </p>
+        <p><b> Insight 2 - </b><br>
+            a. Even if Toyota and Ford were top two performers in total NCT's conducted, but the quality of manufacturing of Ford wasn't that great. <br>
+            b. This can be observed from the fact that Ford is at near top position in each of the four plots. <br>
+        </p>
+
+        We can come at a general conclusion on this dataset that popularity of vehicle manufacturer is not based on how many vehicle models cleared the NCT tests. <br>
+        It is based on multiple factors and Percentage of failures due to multiple items associated with vehicle models can be a primary factor in understanding the popularity of any vehicle model. <br>
+    </p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align: top;"><strong>Design considerations</strong></td>
+<td style="vertical-align: top;">
+    I have used multi-view Bar-plots. To achieve this I have used the vconcat property. This property concatenate multiple plots one below the other.
+    I think Bar plots are best in determining relationship between numerical data(total NCT's, sum of failed NCT's) and categorical data(VehicleMakers)
+    <ol>
+        <li><p>The first view uses a overlapping bar-chart which I have plotted using the layer property.
+        <li><p>The second view uses two properties 'spec' and 'repeat' to ensure that same encoding is applied on all the sub-plots.<br>
+            I have stacked two subplots in this view. The first sub-plot has two bar-plots next to each other. Same properties are applied on both the plots via 'repeat on column'.
+            The second subplot is designed as an exact replica of first sub-plot with different fields in the repeat argument.
+            <br>
+            I have used the tooltips for each bar to ensure that every bar conveys right information.If you hover over the bars, you can see the tooltips in action.
+            Different color combinations are used to display right information. For failures I have used the color red. To indicate winners in graph, I have used darker colors like green.</p></li>
+        <li><p>Also, the data is sorted in reverse order to get the highest Total NCT's and most NCT failures on the top.</p></li>
+    </ol>
+    <p/> I had considered grouped bar-chart for my first plot as an alternative that showed Vehicle maker on Y-axis and (Total NCT's conducted & Total failed NCT's) grouped together on X-axis. But this wasn't conveying correctly a relation between failed and total NCT's. Also, the over-lapping bar plot was more visually appealing and hence I used this as my first plot.
+    For the next view, I couldn't think of any alternative plot that could work better than the stacked subplots. All the four bar plots convey that Toyota had lowest mean NCT failures in each of the category
+    <p>
+        <b>Color interpretations for first plot</b> -<br>
+        1. Purple => Total number of NCT's conducted for each vehicle manufacturer. <br>
+        2. Green => Indicates the vehicle manufacturer with highest number of NCT's conducted. <br>
+        3. Dark Red => Total number of NCT failures for each vehicle manufacturer. <br>
+        4. Orange => Indicates the vehicle manufacturer with lowest number of Failure NCT's. <br>
+    </p>
+    <p>
+        <b>Color interpretations for second sub-plots</b> -<br>
+        1. Yellow => Indicates mean NCT failures for vehicle manufacturer <br>
+        2. Green => Indicates mean NCT failures for the vehicle manufacturer - TOYOTA <br>  
+    </p>
+</td>
+</tr>
+<tr>
+<td style="width: 200px; vertical-align: top;"><strong>Data filtering and transformation:&nbsp;</strong></td>
+<td style="vertical-align: top;">
+    <ol>
+    <li>The initial rows in data are trimmed. The first row is metadata that describes data. Next few rows are empty.</li>
+    <li>Column names have spaces in them. Hence they are renamed to make them more meaningful.</li>
+    <li>Only Vehicle Models that have a greater sum of 1000 total NCT'S completed are used in the visualisation. Having investigated the value of Total NCT's tests completed(field=Total) in Python, I concluded that any model of car that has over 1000 total tests completed would give an accurate representation for the data as a whole.</li>
+    <li>This removes any models of cars that have low mean NCT failures with low total failed NCT's.</li>
+</td>
+</tr>
+</tbody>
+</table>
+</body>
+</html>

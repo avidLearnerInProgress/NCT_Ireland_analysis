@@ -1,0 +1,231 @@
+<html>
+<head>
+    <title> Chirag Shah - 19200072 InfoViz-assignment </title>
+    <script src="https://cdn.jsdelivr.net/npm/vega@5.9.0"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-lite@4.0.2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-embed@6.2.1"></script>
+</head>
+<body>
+    <table style="width: 850px" cellspacing="5" cellpadding="5">
+    <tbody>
+    <tr>
+    <td style="width: 200px; vertical-align: top;"><strong>Name:&nbsp;</strong></td>
+    <td style="vertical-align: top;">Chirag Shah</td>
+    </tr>
+    <tr>
+    <td style="vertical-align: top;"><strong>Student Number:</strong></td>
+    <td style="vertical-align: top;">19200072</td>
+    </tr>
+    <tr>
+    <td style="vertical-align: top;"><strong>Dataset description:</strong></td>
+    <td style="vertical-align: top;">
+        <p><a href="https://data.gov.ie/dataset/2016-make-model-year-failures-at-nct" target="_blank" rel="noopener">NCT Failure Rates upto 2016</a>.</p>
+        <p>
+            The Road Safety Authority (RSA) has provided the following information relating to vehicle makes and models tested by the National Car Testing Service in 2016. The main fields, for example, are summarised as follows:
+            <ul>
+                <li>"VehicleMake" : Vehicle maker.</li>
+                <li>"VehicleModel" : Model launched by vehicle maker.</li>
+                <li>"YearOfRelease" : This field specifies the year of birth for the particular car model.</li>
+                <li>"TotalReleases" : Describes total NCT's completed by each car model.</li>
+                <li>"Pass" : Total NCT's Passed by each car model in a particular year.</li>
+                <li>"PassPercent" : Total NCT's Passed % by each car model in a particular year.</li>
+                <li>"Fail" : Total NCT's Failed by each car model in a particular year.</li>
+                <li>"FailPercent" : Total NCT's Failed % by each car model in a particular year.</li>
+                <li>"VehicleAndSafetyEquipments", "LightingAndElectrical", etc. : These fields are related to fail items that caused the cars to fail the NCT's.</li>
+                <li>"VehicleAndSafetyEquipmentsPercent", "LightingAndElectricalPercent", etc. : These fields are related to fail items % that caused the cars to fail the NCT's.</li>
+            </ul> 
+            Overall this dataset has lots of information about vehicles which have been tested by the NCT.
+            The dataset in itself is cleaned as it doesn't have any missing values.
+            However, the column naming convention isn't that great. Hence I renamed the columns of dataset in Python to something thats more meaningful.
+        </p>
+    </td>
+    </tr>
+    <tr>
+    <td style="vertical-align: top;"><strong>Initial questions</strong></td>
+    <td style="vertical-align: top;">
+        <ul style="list-style-type:disc">
+            <li>A. What is the relationship between the year of the vehicle and mean pass rate?</li>
+            <li>B. Does the failure due to vehicle and safety equipments per car model have any impact on A?</li>
+    </td>
+    </tr>
+    </tbody>
+    </table>
+    <hr />
+  <div id="vis" class="container"></div>
+  <script type="text/javascript">
+    var yourVlSpec =  {
+    "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
+    "description": "A scatterplot showing horsepower and miles per gallons for various cars.",
+    "data": {
+        "url": "https://raw.githubusercontent.com/avidLearnerInProgress/infoviz-assignments/master/make_model_data_16_cleaned_renamed.csv"
+    },
+    "title": {
+        "text": "Relationship between the Mean Pass %, `Vehicle & Safety Equipment` and the Year of Vehicle",
+        "anchor": "middle"
+    },
+    "width": 650,
+    "height": 500,
+    "layer": [
+        {
+            "transform": [
+                {
+                    "filter": "datum.TotalReleases > 100"
+                }
+            ],
+            "mark": {
+                "type": "line",
+                "point":true,
+                "color": "darkgreen"
+            },
+            "encoding": {
+                "x": {
+                    "field": "YearOfRelease",
+                    "type": "nominal"
+                },
+                "y": {
+                    "field": "PassPercent",
+                    "type": "quantitative",
+                    "aggregate": "mean",
+                    "axis": {
+                        "grid": true,
+                        "title": "Mean Pass %"
+                    },
+                    "scale": {
+                        "domain": [
+                            0,
+                            100
+                        ]
+                    }
+                },
+                "tooltip": [{
+                    "field": "PassPercent",
+                    "aggregate": "mean",
+                    "type": "quantitative",
+                    "title": "Mean NCT pass percent"
+                }]
+            }
+        },
+        {
+            "transform": [
+                {
+                    "filter": "datum.TotalReleases > 100"
+                }
+            ],
+            "mark": {
+                "type": "bar"
+            },
+            "encoding": {
+                "x": {
+                    "field": "YearOfRelease",
+                    "type": "nominal",
+                    "axis": {
+                        "grid": false,
+                        "title": "Year of Vehicle"
+                    }
+                },
+                "y": {
+                    "field": "VehicleAndSafetyEquipment",
+                    "type": "quantitative",
+                    "aggregate": "sum",
+                    "axis": {
+                        "grid": true,
+                        "title": "Vehicle and Safety Equipment failures"
+                    },
+                    "scale": {
+                        "domain": [
+                            0,
+                            20000
+                        ]
+                    }
+                },
+                "tooltip": [{
+                    "field": "VehicleAndSafetyEquipment",
+                    "aggregate": "sum",
+                    "type": "quantitative",
+                    "title": "Vehicle And Safety Equipment failure"
+                }],
+                "opacity": {
+                    "value": 0.5
+                },
+                "color":{
+                    "field":"VehicleAndSafetyEquipment",
+                    "type":"quantitative",
+                    "aggregate":"sum",
+                    "scale":{
+                        "range":["#003f5c","#58508d","#bc5090","#ff6361","#ffa600"]
+                    },
+                    "title":"Failures-Vehicl "
+                    
+                }
+            }
+        }
+    ],
+    "resolve": {
+        "scale": {
+            "y": "independent"
+        }
+    }
+}
+    vegaEmbed("#vis", yourVlSpec);
+  </script>
+    <hr />
+<table style="width: 850px;" cellspacing="5" cellpadding="5">
+<tbody>
+<tr>
+<td style="width: 200px; vertical-align: top;"><strong>Description:&nbsp;</strong></td>
+<td style="vertical-align: top;">This is a layered plot with axis on both sides. This plot shows two things- 
+    <ol>
+        <li>The relationship between year of the vehicle and mean pass percentage rate shown by a line graph.</li>
+        <li>The trend of the failures due to vehicle and safety equipments observed in car models for a certain year is shown by the bar chart.</li>
+    </ol>
+    For 1. the y-axis is aligned on left side and for 2. the y-axis is aligned on right side.
+</td>
+</tr>
+<tr>
+<td style="vertical-align: top;"><strong>Insight:</strong></td>
+<td style="vertical-align: top;">
+    <p/><b>Insight 1:</b> 
+    The graph concludes that newer vehicles have a greater average pass percentage rate than those that are older. This can be concluded by gradual upwards trend in the graph.
+    
+    <p/><b>Insight 2:</b> Here we can see that 2005 had highest number of failed NCT's due to Vehicle and Safety Equipments. After the peak in bar-plot, there is no other peak observed after 2005. This is a strong indication that the failures because of Vehicle and Safety Equipment hasn't grown after 2005 and they have gradually decreased.
+    We can conclude that the vehicle and safety equipments have become more robust after 2005. And, this in a way has an impact on mean pass rate after 2005 which is gradually increasing.
+
+    <p/><b>Insight 3:</b> There has been no significant failures before 1998 due to Vehicle and safety equipments.
+    <br>There can be multiple reasons for this - <br>
+    1. The older generation cars before 1998 were manufactured with good vehicle and safety equipments.<br>
+    2. There weren't many cars manufactured before 1998 for local public. This could be a reason in not many failures reported before 1998.<br>
+
+</td>
+</tr>
+<tr>
+<td style="vertical-align: top;"><strong>Design considerations</strong></td>
+<td style="vertical-align: top;">
+    <p/>
+    I have used a layered plot with dual-axis as I feel it is the only appropriate way to represent these two relationships accurately and concisely. I chose a line chart plot as a layer to represent the gradually increasing pass percent average as it does this effectively.<br>
+    Color considerations -  Green color scheme for line is appropriate as it conveys pass (positive) criteria well to a viewer.<br>
+    <p/> 
+    I chose a bar chart to represent NCT failures due to Vehicle and safety equipments taken in relation to the car year as it represents this quantitative data effectively.
+    <p/>
+    I decreased the opacity of the bar chart as I wanted the visualisation to fully represent the rate of increase of the average pass percent successfully to the viewer i.e the slope difference when the bar chart is high vs when the bar chart is low. <br>
+    I believe that the layering of these plots and the dual axis is easy to read and impactful. 
+
+    <p/> I did think about using rule as the mark instead of line for mean pass percent but it got overlap with the bar plot. This was a big problem as I wasn't able to distinguish what was being conveyed when I hovered over the bar.
+
+    I improved the labeling of each axis to make it more clear what it represents.  
+    I have used the tooltips for each bar to ensure that every bar conveys right information.If you hover over the bars, you can see the tooltips in action. 
+    Similarly tooltip has been used for line as well.
+
+</td>
+</tr>
+<tr>
+<td style="width: 200px; vertical-align: top;"><strong>Data filtering and transformation:&nbsp;</strong></td>
+<td style="vertical-align: top;">
+    <li>The initial rows in data are trimmed. The first row is metadata that describes data. Next few rows are empty.</li>
+    <li>Column names have spaces in them. Hence they are renamed to make them easier to process in vega-lite.</li>
+    <li>Only Vehicle Models that have a greater sum of 1000 total NCT'S completed are used in the visualisation. Having investigated the value of Total NCT's tests completed in Python, I concluded that any model of car that has over 1000 total tests would give an accurate representation for the data as a whole.<br>This removes any models of cars that have a high pass percentage but have a low total sum.</li>
+</td>
+</tr>   
+</tbody>
+</table>
+</body>
+</html>

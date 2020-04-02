@@ -1,0 +1,193 @@
+<html>
+<head>
+    <title> Chirag Shah - 19200072 InfoViz-assignment</title>
+    <script src="https://cdn.jsdelivr.net/npm/vega@5.9.0"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-lite@4.0.2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-embed@6.2.1"></script>
+</head>
+<body>
+    <table style="width: 850px" cellspacing="5" cellpadding="5">
+    <tbody>
+    <tr>
+    <td style="width: 200px; vertical-align: top;"><strong>Name:&nbsp;</strong></td>
+    <td style="vertical-align: top;">Chirag Shah</td>
+    </tr>
+    <tr>
+    <td style="vertical-align: top;"><strong>Student Number:</strong></td>
+    <td style="vertical-align: top;">19200072</td>
+    </tr>
+    <tr>
+    <td style="vertical-align: top;"><strong>Dataset description:</strong></td>
+    <td style="vertical-align: top;">
+        <p><a href="https://data.gov.ie/dataset/2016-make-model-year-failures-at-nct" target="_blank" rel="noopener">NCT Failure Rates upto 2016</a>.</p>
+        <p>
+            The Road Safety Authority (RSA) has provided the following information relating to vehicle makes and models tested by the National Car Testing Service in 2016. The main fields, for example, are summarised as follows:
+            <ul>
+                <li>"VehicleMake" : Vehicle maker.</li>
+                <li>"VehicleModel" : Model launched by vehicle maker.</li>
+                <li>"YearOfRelease" : This field specifies the year of birth for the particular car model.</li>
+                <li>"TotalReleases" : Describes total NCT's completed by each car model.</li>
+                <li>"Pass" : Total NCT's Passed by each car model in a particular year.</li>
+                <li>"PassPercent" : Total NCT's Passed % by each car model in a particular year.</li>
+                <li>"Fail" : Total NCT's Failed by each car model in a particular year.</li>
+                <li>"FailPercent" : Total NCT's Failed % by each car model in a particular year.</li>
+                <li>"VehicleAndSafetyEquipments", "LightingAndElectrical", etc. : These fields are related to fail items that caused the cars to fail the NCT's.</li>
+                <li>"VehicleAndSafetyEquipmentsPercent", "LightingAndElectricalPercent", etc. : These fields are related to fail items % that caused the cars to fail the NCT's.</li>
+            </ul> 
+            Overall this dataset has lots of information about vehicles which have been tested by the NCT.
+            The dataset in itself is cleaned as it doesn't have any missing values.
+            However, the column naming convention isn't that great. Hence I renamed the columns of dataset in Python to something thats more meaningful.
+        </p>
+    </td>
+    </tr>
+    <tr>
+    <td style="vertical-align: top;"><strong>Initial questions</strong></td>
+    <td style="vertical-align: top;">
+        <ul style="list-style-type:disc">
+            <li>What are the best car models in Volkswagen family who have the lowest NCT failures?</li>
+            <li>Is there some form of correlation in the overall NCT failures of Volkswagen vs any particular item that caused the failure of NCT?</li>
+        </ul>
+    </td>
+    </tr>
+    </tbody>
+    </table>
+    <hr />
+  <div id="vis" class="container"></div>
+  <script type="text/javascript">
+    var yourVlSpec =  {
+    "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
+    "description": "",
+    "data": {
+        "url": "https://raw.githubusercontent.com/avidLearnerInProgress/infoviz-assignments/master/make_model_data_16_cleaned_combined_renamed.csv"
+    },
+    "title": {
+        "text": "Understanding how different models of Volkswagen perform against different fail items",
+        "anchor": "middle"
+    },
+    "transform": [
+        {
+            "filter": "datum.TotalReleases > 100 && datum.YearOfRelease > 2000 && datum.EmissionsPercent > 0 && datum.ChassisAndBodyPercent > 0 && datum.BrakingEquipmentPercent > 0"
+        },
+        {
+            "filter": {
+                "field": "VehicleMaker",
+                "oneOf": [
+                    "VOLKSWAGEN"
+                ]
+            }
+        }
+    ],
+    "repeat" :{
+      "column": ["BrakingEquipmentPercent", "ChassisAndBodyPercent", "EmissionsPercent"]
+    },
+    "spec" : {
+      "mark": {
+        "type": "point",
+        "tooltip":true
+        },
+      "encoding": {
+        "x": {
+            "field": "FailPercent",
+            "type": "quantitative",
+            "aggregate": "mean",
+            "axis": {
+                "title": "Mean fail percent of NCT's"  
+            },
+            "scale": {
+                "zero": false
+            }
+        },
+        "y": {
+            "field": {"repeat": "column"},
+            "type": "quantitative",
+            "aggregate": "mean"
+        },
+        "color": {
+            "field": "VehicleMakerPlusModel",
+            "type": "nominal",
+            "scale": {
+                "range": "category"
+            },
+            "title": "Vehicle Maker"
+        }
+    }
+  },
+  "config": {
+        "axis": {
+            "labelFontSize": 12,
+            "titleFontSize": 18,
+            "titlePadding": 8
+        },
+        "title": {
+          "fontSize": 20
+        }
+    }
+}
+vegaEmbed("#vis", yourVlSpec);
+  </script>
+    <hr />
+<table style="width: 850px;" cellspacing="5" cellpadding="5">
+<tbody>
+<tr>
+<td style="width: 200px; vertical-align: top;"><strong>Description:&nbsp;</strong></td>
+<td style="vertical-align: top;">
+    Here there are three scatter plots which show relationship of three fields with vehicle models from "Volkswagen" vehicle maker.<br><br>
+    <li>First scatter plot conveys relationship between mean percent of NCT failures due to <b>Braking equipment</b> vs mean percent of <b>Vokswagen NCT failures</b>.<br></li>
+    <li>Second scatter plot conveys relationship between mean percent of NCT failures due to <b>Chassis and body equipments</b> vs mean percent of <b>Vokswagen NCT failures</b>.<br></li>
+    <li>Third scatter plot conveys relationship between mean percent of NCT failures due to <b>Emissions</b> vs mean percent of <b>Vokswagen NCT failures</b>.<br></li>
+</td>
+</tr>
+<tr>
+<td style="vertical-align: top;"><strong>Insight:</strong></td>
+<td style="vertical-align: top;">
+    We will use following conventions for the insights -<br>
+    a. mean percent of NCT failures due to Emissions(ME)<br>
+    b. mean percent of NCT failures due to Chassis And Body(MC)<br>
+    c. mean percent of NCT failures due to Braking Equipment(MB)<br>
+
+    <p/><b>Insight 1 - </b><br>
+    From all the 3 plots we can observe that there are two points who are very close to zero on each of the plots.
+    These two points are the Volkswagen models <b>Scirocco</b> and <b>Tiguan</b> who have lowest mean in cateogries ME, MC and MB respectively. 
+    They are the ones that are the best models in terms of clearing the NCT tests as they have observed very less failures in each of the categories.
+    We can also conclude that since both the models Scirocco and Tiguan have greater possibility in clearing the NCT tests, they have high chance of being reliable in the same category after purchasing as well.
+
+    <p/><b>Insight 2 - </b><br>
+    Volkswagen - Sharan is model that has highest failure rate in all three categories. This clearly indicates that it isn't the best model to select from Volkswagen family of cars.
+    
+    <p/><b>Insight 3 - </b><br>
+    We can observe that there are more number of cars from the categories MB and MC skewed towards the origin. This states that there are more models of Volkswagen which are profieint in the first two categories MB and MC.
+    However, for the category ME, there isn't much skewness towards the origin.
+    The above results show that vehicles produced by Volkswagen didn't have good emission mechanisms as many cars failed the NCT's for ME <br><br>
+
+</td>
+</tr>
+<tr>
+<td style="vertical-align: top;"><strong>Design considerations</strong></td>
+<td style="vertical-align: top;">
+    </p>
+    3 scatter plots are used that have the repeat property set for a list of parameters namely - (ME, MB and MC). 
+    With the help of repeat I am able to achieve same transformation on all the 3 scatter plots
+    I have set color property to categorise by the model of the vehicle. This helps in generalising vehicle models by their point uniquely on different scatter plots.
+    Lastly, I have used tooltip to add meaning to each point plotted on the graph.
+
+    </p> I tried a line plot with 2 lines on a single plot. The first line meant fail percent for either of (ME, MC or MB) and the next line meant total fail percent of NCT's for Volkswagen. However, this plot had nothing to convey about the models that vehicle maker manufactures.
+    Even though the line plot was simple alternative, it wasn't able to convey as much as a scatter plot is able to convey right now.
+    Each point on the scatter plot talks about the models of Volkswagen manufacturer.
+    The reason for chosing Volkswagen specifically was because it has the 2nd highest total NCT failures. Ford was the leader in NCT failure, but the data was highly imbalanced with lots of mean values as 0 for many Ford models.
+    Also, the scatter plot for Ford was not conveying any inter-relation or insight. Hence, I had to opt for Volkswagen.
+    </td>
+</tr>
+<tr>
+<td style="width: 200px; vertical-align: top;"><strong>Data filtering and transformation:&nbsp;</strong></td>
+<td style="vertical-align: top;">
+    <li>The initial rows in data are trimmed. The first row is metadata that describes data. Next few rows are empty.</li>
+    <li>Column names have spaces in them. Hence they are renamed to make them easier to process in vega-lite.</li>
+    <li>Only vehicle models that have a greater sum of 1000 total NCT'S completed are used in the visualisation</li>
+    <li>For this plot, I have applied filter to consider cars only from Volkswagen manufacturer</li>
+    <li>Other appropriate filters are applied such as EmissionsPercent > 0 && ChassisAndBodyPercent > 0 && BrakingEquipmentPercent > 0. These filters are used to scale down the data and ensure that it fits in the range of axes.</li>
+</td>
+</tr>
+</tbody>
+</table>
+</body>
+</html>
