@@ -1,0 +1,220 @@
+{
+    "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
+    "description": "",
+    "data": {
+      "url": "https://raw.githubusercontent.com/avidLearnerInProgress/infoviz-assignments/master/make_model_data_16_cleaned_renamed.csv"
+    },
+    "title": {
+      "text": "Top vehicle manufacturer between 2007-2010? ",
+      "anchor": "middle"
+    },
+    "transform": [
+      {"filter": "datum.TotalReleases > 1000"},
+      {
+        "filter": {
+          "field": "YearOfRelease",
+          "oneOf": ["2007", "2008", "2009", "2010"]
+        }
+      }
+    ],
+    "vconcat": [
+      {
+        "layer": [
+          {
+            "width": 500,
+            "height": 400,
+            "mark": {"type": "bar", "fontWeight": "bold"},
+            "encoding": {
+              "x": {
+                "field": "TotalReleases",
+                "type": "quantitative",
+                "aggregate": "sum",
+                "axis": {"title": "Total NCT's conducted"}
+              },
+              "y": {
+                "field": "VehicleMaker",
+                "type": "nominal",
+                "axis": {"title": "Vehicle Maker", "orient": "left"},
+                "sort": {
+                  "op": "sum",
+                  "field": "TotalReleases",
+                  "order": "descending"
+                }
+              },
+              "tooltip": [
+                {
+                  "field": "TotalReleases",
+                  "type": "quantitative",
+                  "aggregate": "sum",
+                  "title": "Total NCT's conducted"
+                }
+              ],
+              "color": {
+                "condition": {
+                  "test": "datum.VehicleMaker == 'TOYOTA'",
+                  "value": "#488f31"
+                },
+                "value": "#BA55D3"
+              }
+            }
+          },
+          {
+            "width": 500,
+            "height": 400,
+            "mark": {"type": "rect", "color": "#ffa600"},
+            "encoding": {
+              "x": {
+                "field": "Fail",
+                "type": "quantitative",
+                "aggregate": "sum",
+                "axis": {"title": "Total Failed NCT's"}
+              },
+              "y": {
+                "field": "VehicleMaker",
+                "type": "nominal",
+                "axis": {"title": "Vehicle Maker"},
+                "sort": {
+                  "op": "sum",
+                  "field": "TotalReleases",
+                  "order": "descending"
+                }
+              },
+              "tooltip": [
+                {
+                  "field": "Fail",
+                  "type": "quantitative",
+                  "aggregate": "sum",
+                  "title": "Total Failed NCT's"
+                }
+              ],
+              "color": {
+                "condition": {
+                  "test": "datum.VehicleMaker == 'TOYOTA'",
+                  "value": "#FF7F50"
+                },
+                "value": "#ff6361"
+              }
+            }
+          }
+        ]
+      },
+      {
+        "transform": [
+          {
+            "filter": {
+              "field": "VehicleMaker",
+              "oneOf": [
+                "SKODA",
+                "TOYOTA",
+                "FORD",
+                "RENAULT",
+                "VOLKSWAGEN",
+                "MERCEDES BENZ",
+                "PEUGEOT",
+                "HYUNDAI",
+                "DACIA"
+              ]
+            }
+          }
+        ],
+        "repeat": {
+          "column": ["EmissionsPercent", "SteeringAndSuspensionPercent"]
+        },
+        "spec": {
+          "mark": "bar",
+          "encoding": {
+            "y": {
+              "field": "VehicleMaker",
+              "type": "nominal",
+              "axis": {"title": "VehicleMaker"},
+              "sort": {
+                "op": "mean",
+                "field": {"repeat": "column"},
+                "order": "descending"
+              }
+            },
+            "x": {
+              "field": {"repeat": "column"},
+              "type": "quantitative",
+              "aggregate": "mean"
+            },
+            "color": {
+              "condition": {
+                "test": "datum.VehicleMaker == 'TOYOTA'",
+                "value": "#488f31"
+              },
+              "value": "#ffa600"
+            },
+            "tooltip": [
+              {
+                "field": {"repeat": "column"},
+                "type": "quantitative",
+                "aggregate": "mean",
+                "title": "Mean NCT Failures"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "transform": [
+          {
+            "filter": {
+              "field": "VehicleMaker",
+              "oneOf": [
+                "SKODA",
+                "TOYOTA",
+                "FORD",
+                "RENAULT",
+                "VOLKSWAGEN",
+                "MERCEDES BENZ",
+                "PEUGEOT",
+                "HYUNDAI",
+                "DACIA"
+              ]
+            }
+          }
+        ],
+        "repeat": {"column": ["LightTestPercent", "WheelsAndTyresPercent"]},
+        "spec": {
+          "mark": "bar",
+          "encoding": {
+            "y": {
+              "field": "VehicleMaker",
+              "type": "nominal",
+              "axis": {"title": "VehicleMaker"},
+              "sort": {
+                "op": "mean",
+                "field": {"repeat": "column"},
+                "order": "descending"
+              }
+            },
+            "x": {
+              "field": {"repeat": "column"},
+              "type": "quantitative",
+              "aggregate": "mean"
+            },
+            "color": {
+              "condition": {
+                "test": "datum.VehicleMaker == 'TOYOTA'",
+                "value": "#488f31"
+              },
+              "value": "#ffa600"
+            },
+            "tooltip": [
+              {
+                "field": {"repeat": "column"},
+                "type": "quantitative",
+                "aggregate": "mean",
+                "title": "Mean NCT Failures"
+              }
+            ]
+          }
+        }
+      }
+    ],
+    "config": {
+      "axis": {"labelFontSize": 18, "titleFontSize": 18, "titlePadding": 8},
+      "title": {"fontSize": 23, "fontWeight": "bold"}
+    }
+  }

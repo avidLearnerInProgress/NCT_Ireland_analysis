@@ -1,0 +1,383 @@
+{
+    "$schema": "https://vega.github.io/schema/vega/v5.json",
+    "background": "white",
+    "padding": 5,
+    "width": 200,
+    "height": 200,
+    "title": {
+      "text": "Understanding how different models of Volkswagen perform against different fail items",
+      "anchor": "middle"
+    },
+    "data": [
+      {
+        "name": "source_0",
+        "url": "https://raw.githubusercontent.com/avidLearnerInProgress/infoviz-assignments/master/make_model_data_16_cleaned_combined_renamed.csv",
+        "format": {
+          "type": "csv",
+          "parse": {"VehicleMaker": "string"},
+          "delimiter": ","
+        },
+        "transform": [
+          {
+            "type": "filter",
+            "expr": "datum.TotalReleases > 100 && datum.YearOfRelease > 2000 && datum.EmissionsPercent > 0 && datum.ChassisAndBodyPercent > 0 && datum.BrakingEquipmentPercent > 0"
+          },
+          {
+            "type": "filter",
+            "expr": "indexof([\"VOLKSWAGEN\"], datum[\"VehicleMaker\"]) !== -1"
+          },
+          {
+            "type": "aggregate",
+            "groupby": ["VehicleMakerPlusModel"],
+            "ops": ["mean", "mean", "mean", "mean"],
+            "fields": [
+              "FailPercent",
+              "EmissionsPercent",
+              "BrakingEquipmentPercent",
+              "ChassisAndBodyPercent"
+            ],
+            "as": [
+              "mean_FailPercent",
+              "mean_EmissionsPercent",
+              "mean_BrakingEquipmentPercent",
+              "mean_ChassisAndBodyPercent"
+            ]
+          }
+        ]
+      }
+    ],
+    "layout": {"padding": 20, "columns": 3, "bounds": "full", "align": "all"},
+    "marks": [
+      {
+        "type": "group",
+        "name": "child__repeat_column_BrakingEquipmentPercent_group",
+        "style": "cell",
+        "encode": {
+          "update": {"width": {"signal": "width"}, "height": {"signal": "height"}}
+        },
+        "marks": [
+          {
+            "name": "child__repeat_column_BrakingEquipmentPercent_marks",
+            "type": "symbol",
+            "style": ["point"],
+            "from": {"data": "source_0"},
+            "encode": {
+              "update": {
+                "tooltip": {
+                  "signal": "{\"Mean fail percent of NCT's\": format(datum[\"mean_FailPercent\"], \"\"), \"Mean of BrakingEquipmentPercent\": format(datum[\"mean_BrakingEquipmentPercent\"], \"\"), \"Vehicle Maker\": ''+datum[\"VehicleMakerPlusModel\"]}"
+                },
+                "fill": {"value": "transparent"},
+                "stroke": {"scale": "color", "field": "VehicleMakerPlusModel"},
+                "x": [
+                  {
+                    "test": "!isValid(datum[\"mean_FailPercent\"]) || !isFinite(+datum[\"mean_FailPercent\"])",
+                    "value": 0
+                  },
+                  {
+                    "scale": "child__repeat_column_BrakingEquipmentPercent_x",
+                    "field": "mean_FailPercent"
+                  }
+                ],
+                "y": {
+                  "scale": "child__repeat_column_BrakingEquipmentPercent_y",
+                  "field": "mean_BrakingEquipmentPercent"
+                }
+              }
+            }
+          }
+        ],
+        "axes": [
+          {
+            "scale": "child__repeat_column_BrakingEquipmentPercent_x",
+            "orient": "bottom",
+            "gridScale": "child__repeat_column_BrakingEquipmentPercent_y",
+            "grid": true,
+            "tickCount": {"signal": "ceil(width/40)"},
+            "domain": false,
+            "labels": false,
+            "maxExtent": 0,
+            "minExtent": 0,
+            "ticks": false,
+            "zindex": 0
+          },
+          {
+            "scale": "child__repeat_column_BrakingEquipmentPercent_y",
+            "orient": "left",
+            "gridScale": "child__repeat_column_BrakingEquipmentPercent_x",
+            "grid": true,
+            "tickCount": {"signal": "ceil(height/40)"},
+            "domain": false,
+            "labels": false,
+            "maxExtent": 0,
+            "minExtent": 0,
+            "ticks": false,
+            "zindex": 0
+          },
+          {
+            "scale": "child__repeat_column_BrakingEquipmentPercent_x",
+            "orient": "bottom",
+            "grid": false,
+            "title": "Mean fail percent of NCT's",
+            "labelFlush": true,
+            "labelOverlap": true,
+            "tickCount": {"signal": "ceil(width/40)"},
+            "zindex": 0
+          },
+          {
+            "scale": "child__repeat_column_BrakingEquipmentPercent_y",
+            "orient": "left",
+            "grid": false,
+            "title": "Mean of BrakingEquipmentPercent",
+            "labelOverlap": true,
+            "tickCount": {"signal": "ceil(height/40)"},
+            "zindex": 0
+          }
+        ]
+      },
+      {
+        "type": "group",
+        "name": "child__repeat_column_ChassisAndBodyPercent_group",
+        "style": "cell",
+        "encode": {
+          "update": {"width": {"signal": "width"}, "height": {"signal": "height"}}
+        },
+        "marks": [
+          {
+            "name": "child__repeat_column_ChassisAndBodyPercent_marks",
+            "type": "symbol",
+            "style": ["point"],
+            "from": {"data": "source_0"},
+            "encode": {
+              "update": {
+                "tooltip": {
+                  "signal": "{\"Mean fail percent of NCT's\": format(datum[\"mean_FailPercent\"], \"\"), \"Mean of ChassisAndBodyPercent\": format(datum[\"mean_ChassisAndBodyPercent\"], \"\"), \"Vehicle Maker\": ''+datum[\"VehicleMakerPlusModel\"]}"
+                },
+                "fill": {"value": "transparent"},
+                "stroke": {"scale": "color", "field": "VehicleMakerPlusModel"},
+                "x": [
+                  {
+                    "test": "!isValid(datum[\"mean_FailPercent\"]) || !isFinite(+datum[\"mean_FailPercent\"])",
+                    "value": 0
+                  },
+                  {
+                    "scale": "child__repeat_column_ChassisAndBodyPercent_x",
+                    "field": "mean_FailPercent"
+                  }
+                ],
+                "y": {
+                  "scale": "child__repeat_column_ChassisAndBodyPercent_y",
+                  "field": "mean_ChassisAndBodyPercent"
+                }
+              }
+            }
+          }
+        ],
+        "axes": [
+          {
+            "scale": "child__repeat_column_ChassisAndBodyPercent_x",
+            "orient": "bottom",
+            "gridScale": "child__repeat_column_ChassisAndBodyPercent_y",
+            "grid": true,
+            "tickCount": {"signal": "ceil(width/40)"},
+            "domain": false,
+            "labels": false,
+            "maxExtent": 0,
+            "minExtent": 0,
+            "ticks": false,
+            "zindex": 0
+          },
+          {
+            "scale": "child__repeat_column_ChassisAndBodyPercent_y",
+            "orient": "left",
+            "gridScale": "child__repeat_column_ChassisAndBodyPercent_x",
+            "grid": true,
+            "tickCount": {"signal": "ceil(height/40)"},
+            "domain": false,
+            "labels": false,
+            "maxExtent": 0,
+            "minExtent": 0,
+            "ticks": false,
+            "zindex": 0
+          },
+          {
+            "scale": "child__repeat_column_ChassisAndBodyPercent_x",
+            "orient": "bottom",
+            "grid": false,
+            "title": "Mean fail percent of NCT's",
+            "labelFlush": true,
+            "labelOverlap": true,
+            "tickCount": {"signal": "ceil(width/40)"},
+            "zindex": 0
+          },
+          {
+            "scale": "child__repeat_column_ChassisAndBodyPercent_y",
+            "orient": "left",
+            "grid": false,
+            "title": "Mean of ChassisAndBodyPercent",
+            "labelOverlap": true,
+            "tickCount": {"signal": "ceil(height/40)"},
+            "zindex": 0
+          }
+        ]
+      },
+      {
+        "type": "group",
+        "name": "child__repeat_column_EmissionsPercent_group",
+        "style": "cell",
+        "encode": {
+          "update": {"width": {"signal": "width"}, "height": {"signal": "height"}}
+        },
+        "marks": [
+          {
+            "name": "child__repeat_column_EmissionsPercent_marks",
+            "type": "symbol",
+            "style": ["point"],
+            "from": {"data": "source_0"},
+            "encode": {
+              "update": {
+                "tooltip": {
+                  "signal": "{\"Mean fail percent of NCT's\": format(datum[\"mean_FailPercent\"], \"\"), \"Mean of EmissionsPercent\": format(datum[\"mean_EmissionsPercent\"], \"\"), \"Vehicle Maker\": ''+datum[\"VehicleMakerPlusModel\"]}"
+                },
+                "fill": {"value": "transparent"},
+                "stroke": {"scale": "color", "field": "VehicleMakerPlusModel"},
+                "x": [
+                  {
+                    "test": "!isValid(datum[\"mean_FailPercent\"]) || !isFinite(+datum[\"mean_FailPercent\"])",
+                    "value": 0
+                  },
+                  {
+                    "scale": "child__repeat_column_EmissionsPercent_x",
+                    "field": "mean_FailPercent"
+                  }
+                ],
+                "y": {
+                  "scale": "child__repeat_column_EmissionsPercent_y",
+                  "field": "mean_EmissionsPercent"
+                }
+              }
+            }
+          }
+        ],
+        "axes": [
+          {
+            "scale": "child__repeat_column_EmissionsPercent_x",
+            "orient": "bottom",
+            "gridScale": "child__repeat_column_EmissionsPercent_y",
+            "grid": true,
+            "tickCount": {"signal": "ceil(width/40)"},
+            "domain": false,
+            "labels": false,
+            "maxExtent": 0,
+            "minExtent": 0,
+            "ticks": false,
+            "zindex": 0
+          },
+          {
+            "scale": "child__repeat_column_EmissionsPercent_y",
+            "orient": "left",
+            "gridScale": "child__repeat_column_EmissionsPercent_x",
+            "grid": true,
+            "tickCount": {"signal": "ceil(height/40)"},
+            "domain": false,
+            "labels": false,
+            "maxExtent": 0,
+            "minExtent": 0,
+            "ticks": false,
+            "zindex": 0
+          },
+          {
+            "scale": "child__repeat_column_EmissionsPercent_x",
+            "orient": "bottom",
+            "grid": false,
+            "title": "Mean fail percent of NCT's",
+            "labelFlush": true,
+            "labelOverlap": true,
+            "tickCount": {"signal": "ceil(width/40)"},
+            "zindex": 0
+          },
+          {
+            "scale": "child__repeat_column_EmissionsPercent_y",
+            "orient": "left",
+            "grid": false,
+            "title": "Mean of EmissionsPercent",
+            "labelOverlap": true,
+            "tickCount": {"signal": "ceil(height/40)"},
+            "zindex": 0
+          }
+        ]
+      }
+    ],
+    "scales": [
+      {
+        "name": "color",
+        "type": "ordinal",
+        "domain": {
+          "data": "source_0",
+          "field": "VehicleMakerPlusModel",
+          "sort": true
+        },
+        "range": "category"
+      },
+      {
+        "name": "child__repeat_column_BrakingEquipmentPercent_x",
+        "type": "linear",
+        "domain": {"data": "source_0", "field": "mean_FailPercent"},
+        "range": [0, {"signal": "width"}],
+        "zero": false,
+        "nice": true
+      },
+      {
+        "name": "child__repeat_column_BrakingEquipmentPercent_y",
+        "type": "linear",
+        "domain": {"data": "source_0", "field": "mean_BrakingEquipmentPercent"},
+        "range": [{"signal": "height"}, 0],
+        "nice": true,
+        "zero": true
+      },
+      {
+        "name": "child__repeat_column_ChassisAndBodyPercent_x",
+        "type": "linear",
+        "domain": {"data": "source_0", "field": "mean_FailPercent"},
+        "range": [0, {"signal": "width"}],
+        "zero": false,
+        "nice": true
+      },
+      {
+        "name": "child__repeat_column_ChassisAndBodyPercent_y",
+        "type": "linear",
+        "domain": {"data": "source_0", "field": "mean_ChassisAndBodyPercent"},
+        "range": [{"signal": "height"}, 0],
+        "nice": true,
+        "zero": true
+      },
+      {
+        "name": "child__repeat_column_EmissionsPercent_x",
+        "type": "linear",
+        "domain": {"data": "source_0", "field": "mean_FailPercent"},
+        "range": [0, {"signal": "width"}],
+        "zero": false,
+        "nice": true
+      },
+      {
+        "name": "child__repeat_column_EmissionsPercent_y",
+        "type": "linear",
+        "domain": {"data": "source_0", "field": "mean_EmissionsPercent"},
+        "range": [{"signal": "height"}, 0],
+        "nice": true,
+        "zero": true
+      }
+    ],
+    "legends": [
+      {
+        "title": "Vehicle Maker",
+        "stroke": "color",
+        "gradientLength": {"signal": "clamp(height, 64, 200)"},
+        "symbolType": "circle",
+        "encode": {"symbols": {"update": {"fill": {"value": "transparent"}}}}
+      }
+    ],
+    "config": {
+      "axis": {"labelFontSize": 12, "titleFontSize": 18, "titlePadding": 8},
+      "style": {"group-title": {"fontSize": 20}}
+    }
+  }

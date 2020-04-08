@@ -1,0 +1,77 @@
+{
+    "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
+    "description": "A scatterplot showing horsepower and miles per gallons for various cars.",
+    "data": {
+      "url": "https://raw.githubusercontent.com/avidLearnerInProgress/infoviz-assignments/master/make_model_data_16_cleaned_renamed.csv"
+    },
+    "title": {
+      "text": "Relationship between the Mean Pass %, `Vehicle & Safety Equipment` and the Year of Vehicle",
+      "anchor": "middle"
+    },
+    "width": 650,
+    "height": 500,
+    "layer": [
+      {
+        "transform": [{"filter": "datum.TotalReleases > 100"}],
+        "mark": {"type": "line", "point": true, "color": "darkgreen"},
+        "encoding": {
+          "x": {"field": "YearOfRelease", "type": "nominal"},
+          "y": {
+            "field": "PassPercent",
+            "type": "quantitative",
+            "aggregate": "mean",
+            "axis": {"grid": true, "title": "Mean Pass %"},
+            "scale": {"domain": [0, 100]}
+          },
+          "tooltip": [
+            {
+              "field": "PassPercent",
+              "aggregate": "mean",
+              "type": "quantitative",
+              "title": "Mean NCT pass percent"
+            }
+          ]
+        }
+      },
+      {
+        "transform": [{"filter": "datum.TotalReleases > 100"}],
+        "mark": {"type": "bar"},
+        "encoding": {
+          "x": {
+            "field": "YearOfRelease",
+            "type": "nominal",
+            "axis": {"grid": false, "title": "Year of Vehicle"}
+          },
+          "y": {
+            "field": "VehicleAndSafetyEquipment",
+            "type": "quantitative",
+            "aggregate": "sum",
+            "axis": {
+              "grid": true,
+              "title": "Vehicle and Safety Equipment failures"
+            },
+            "scale": {"domain": [0, 20000]}
+          },
+          "tooltip": [
+            {
+              "field": "VehicleAndSafetyEquipment",
+              "aggregate": "sum",
+              "type": "quantitative",
+              "title": "Vehicle And Safety Equipment failure"
+            }
+          ],
+          "opacity": {"value": 0.5},
+          "color": {
+            "field": "VehicleAndSafetyEquipment",
+            "type": "quantitative",
+            "aggregate": "sum",
+            "scale": {
+              "range": ["#003f5c", "#58508d", "#bc5090", "#ff6361", "#ffa600"]
+            },
+            "title": "Failures-Vehicl "
+          }
+        }
+      }
+    ],
+    "resolve": {"scale": {"y": "independent"}}
+  }
