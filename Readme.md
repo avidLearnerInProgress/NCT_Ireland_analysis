@@ -20,20 +20,20 @@ Overall this is a broad dataset with a variety of information about the Vehicles
 The data has been preprocessed and field names are changed to make it more meaningful.
 The aim of this project was to gain an insight into this data and producing three effective visualisations using Vega-Lite. More information can be found about Vega-Lite [here](https://vega.github.io/vega-lite/)
 
-Following are the visualisations implemented -
+## Following are the visualisations implemented -
 
-* **Mean Pass % vs NCT Failures due to Vehicle and Safety Equipments** [code](/code/vega_spec/Vis1.json.vg)
+### **Mean Pass % vs NCT Failures due to Vehicle and Safety Equipments** [code](/code/vega_spec/Vis1.json.vg)
 
-__<img src="/output/vis1.png" height = 500>Image1</img>__
-
-------
-
-* **Top vehicle manufacturer between 2007-2010** [code](/code/vega_spec/Vis2.json.vg)
-
-__<img src="/output/vis2.png" height = 500>Image2</img>__
+__<center><img src="/output/vis1.png" height = 500>Image1</img></center>__
 
 ------
 
-* **Impact of fail items on different models of 'Volkswagen' car manufacturer** [code](/code/vega_spec/Vis3.json.vg)
+### **Top vehicle manufacturer between 2007-2010** [code](/code/vega_spec/Vis2.json.vg)
 
-__<img src="/output/vis3.png" height = 500>Image3</img>__
+__<center><img src="/output/vis2.png" height = 500>Image2</img><center>__
+
+------
+
+### **Impact of fail items on different models of 'Volkswagen' car manufacturer** [code](/code/vega_spec/Vis3.json.vg)
+
+__<center><img src="/output/vis3.png" height = "auto">Image3</img><center>__
