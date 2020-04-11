@@ -20,6 +20,14 @@ Overall this is a broad dataset with a variety of information about the Vehicles
 The data has been preprocessed and field names are changed to make it more meaningful.
 The aim of this project was to gain an insight into this data and producing three effective visualisations using Vega-Lite. More information can be found about Vega-Lite [here](https://vega.github.io/vega-lite/)
 
+
+## Usage
+The visualisations are dynamic. Each component on the graph can be hovered to understand information about what the visualisation is conveying.
+
+To view source code in the Vega-Lite browser, navigate to three dots present in the top-right position of each visualisation. Inside the navigation pane, click on 'Open in Vega Editor'.  
+
+Raw Vega Spec can also be viewed by navigating to three-dots and then clicking on 'View Compiled Vega'.  
+
 ## Following are the visualisations implemented -
 
 ### **Mean Pass % vs NCT Failures due to Vehicle and Safety Equipments** 
