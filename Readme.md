@@ -25,7 +25,7 @@ The aim of this project was to gain an insight into this data and producing thre
 ### **Mean Pass % vs NCT Failures due to Vehicle and Safety Equipments** [code](/code/vega_spec/Vis1.json.vg)
 
 <p align="center">
-<img src="/output/vis1.png" height = 500></img>
+<img src="/output/vis1.png" height = 400></img>
 </p>
 
 ------
@@ -33,7 +33,7 @@ The aim of this project was to gain an insight into this data and producing thre
 ### **Top vehicle manufacturer between 2007-2010** [code](/code/vega_spec/Vis2.json.vg)
 
 <p align="center">
-<img src="/output/vis2.png" height = 500></img>
+<img src="/output/vis2.png" height = 600></img>
 </p>
 
 ------
