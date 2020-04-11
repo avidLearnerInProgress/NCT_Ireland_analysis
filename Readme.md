@@ -33,8 +33,8 @@ Raw Vega Spec can also be viewed by navigating to three-dots and then clicking o
 ### **Mean Pass % vs NCT Failures due to Vehicle and Safety Equipments** 
 
 Output:<br><br>
-<p align="center">
 
+<p align="center">
 <img src="/output/vis1.png" height = 400></img>
 </p>
 
@@ -45,6 +45,7 @@ Output:<br><br>
 ### **Top vehicle manufacturer between 2007-2010** 
 
 Output:<br><br>
+
 <p align="center">
 <img src="/output/vis2.png" height = 600></img>
 </p>
@@ -56,6 +57,7 @@ Output:<br><br>
 ### **Impact of fail items on different models of 'Volkswagen' car manufacturer** 
 
 Output:<br><br>
+
 <p align="center">
 <img src="/output/vis3.png" height = "auto"></img>
 </p>
