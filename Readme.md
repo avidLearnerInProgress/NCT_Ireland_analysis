@@ -24,16 +24,16 @@ Following are the visualisations implemented -
 
 * **Mean Pass % vs NCT Failures due to Vehicle and Safety Equipments** [code](/code/vega_spec/Vis1.json.vg)
 
-__ <img src="/output/vis1.png" height = 500>Image1</img>__
+__<img src="/output/vis1.png" height = 500>Image1</img>__
 
 ------
 
 * **Top vehicle manufacturer between 2007-2010** [code](/code/vega_spec/Vis2.json.vg)
 
-__ <img src="/output/vis2.png" height = 500>Image2</img>__
+__<img src="/output/vis2.png" height = 500>Image2</img>__
 
 ------
 
 * **Impact of fail items on different models of 'Volkswagen' car manufacturer** [code](/code/vega_spec/Vis3.json.vg)
 
-__ <img src="/output/vis3.png" height = 500>Image3</img>__
+__<img src="/output/vis3.png" height = 500>Image3</img>__
