@@ -24,16 +24,16 @@ Following are the visualisations implemented -
 
 * **Mean Pass % vs NCT Failures due to Vehicle and Safety Equipments** [code](/code/vega_spec/Vis1.json.vg)
 
-__![Image1](https://rawcdn.githack.com/avidLearnerInProgress/NCT_Ireland_analysis/master/output/vis1.png)__
+__![Image1](/output/vis1.png)__
 
 ------
 
 * **Top vehicle manufacturer between 2007-2010** [code](/code/vega_spec/Vis2.json.vg)
 
-__![Image2](https://rawcdn.githack.com/avidLearnerInProgress/NCT_Ireland_analysis/master/output/vis2.png)__
+__![Image2](/output/vis2.png)__
 
 ------
 
 * **Impact of fail items on different models of 'Volkswagen' car manufacturer** [code](/code/vega_spec/Vis3.json.vg)
 
-__![Image3](https://rawcdn.githack.com/avidLearnerInProgress/NCT_Ireland_analysis/master/output/vis3.png)__
+__![Image3](/output/vis3.png)__
